@@ -60,7 +60,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20181217.03'
+VERSION = '20181217.04'
 USER_AGENT = 'ArchiveTeam'
 TRACKER_ID = 'tumblr-static'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -200,13 +200,17 @@ class WgetArgs(object):
                 raise Exception('Could not get URLs list from github.')
             for url in r.text.splitlines():
                 url = url.strip()
-                if len(url) == 0 or not re.search(r'^https?://[^/]+/', url) \
-                        or 'www.tumblr.com' in url:
-                    continue
                 if '%20' in url:
-                    url = url.split('%20')[0]
-                wget_args.extend(['--warc-header', 'tumblr-static-url: {}'.format(url)])
-                wget_args.append(url)
+                    urls = url.split('%20')
+                    urls.append(url.replace('%20', ''))
+                else:
+                    urls = url
+                for url in urls:
+                    if len(url) == 0 or not re.search(r'^https?://[^/]+/', url) \
+                            or 'www.tumblr.com' in url:
+                        continue
+                    wget_args.extend(['--warc-header', 'tumblr-static-url: {}'.format(url)])
+                    wget_args.append(url)
         else:
             raise Exception('Unknown item')
 
