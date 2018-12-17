@@ -60,7 +60,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20181217.01'
+VERSION = '20181217.02'
 USER_AGENT = 'ArchiveTeam'
 TRACKER_ID = 'tumblr-static'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -195,7 +195,7 @@ class WgetArgs(object):
         item['item_value'] = item_value
 
         if item_type == 'list':
-            r = requests.get('https://grafana.fvz.io/.well-known/at/{}'.format(item_value))
+            r = requests.get('http://grafana.fvz.io/.well-known/at/{}'.format(item_value))
             if r.status_code != 200:
                 raise Exception('Could not get URLs list from github.')
             for url in r.text.splitlines():
