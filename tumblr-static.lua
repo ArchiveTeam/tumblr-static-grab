@@ -13,17 +13,33 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
     return wget.actions.ABORT
   end
   
-  if status_code >= 500
-  or (status_code >= 400 and status_code ~= 404 and status_code ~= 403)
-  or status_code == 0
+  if status_code == 0
+  or status_code > 400
   then
     io.stdout:write("Server returned "..http_stat.statcode.." ("..err.."). Sleeping.\n")
     io.stdout:flush()
-    if tries > 8 then -- try for 256 seconds, then abort item
-      io.stdout:write("\nI give up...\n")
-      io.stdout:flush()
-      tries = 0
-      return wget.actions.ABORT
+    maxtries = 8
+    if status_code == 400
+    or status_code == 403
+    or status_code == 404
+    or status_code == 500
+    then
+      maxtries = 5
+    end
+    if tries > maxtries then -- try for 256 or 5 (on specific error codes) seconds, then abort item
+      if status_code == 400
+      or status_code == 403
+      or status_code == 404
+      or status_code == 500
+      then
+        tires = 0
+        return wget.actions.EXIT -- ignore specific error codes
+      else
+        io.stdout:write("\nI give up...\n")
+        io.stdout:flush()
+        tries = 0
+        return wget.actions.ABORT
+      end
     else
       local backoff = math.floor(math.pow(2, tries)) -- math.pow returns a float, math.floor turns it into an int so the sleep cmd gets an int
       os.execute("sleep " .. backoff)
