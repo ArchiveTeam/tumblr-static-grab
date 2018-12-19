@@ -32,7 +32,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
       or status_code == 404
       or status_code == 500
       then
-        tires = 0
+        tries = 0
         return wget.actions.EXIT -- ignore specific error codes
       else
         io.stdout:write("\nI give up...\n")
