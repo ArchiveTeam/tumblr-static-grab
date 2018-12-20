@@ -40,7 +40,9 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   end
 
   tries = 0
-  failures = math.max(0, failures - 1)
+  if failures > 0 then
+    failures = failures - 1
+  end
 
   local sleep_time = 0
 
