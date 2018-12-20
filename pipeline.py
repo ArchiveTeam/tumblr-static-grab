@@ -60,7 +60,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20181218.01'
+VERSION = '20181220.01'
 USER_AGENT = 'ArchiveTeam'
 TRACKER_ID = 'tumblr-static'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -205,6 +205,7 @@ class WgetArgs(object):
                     urls.append(url.replace('%20', ''))
                 else:
                     urls = [url]
+                random.shuffle(urls)
                 for url in urls:
                     if len(url) == 0 or not re.search(r'^https?://[^/]+/', url) \
                             or 'www.tumblr.com' in url:
