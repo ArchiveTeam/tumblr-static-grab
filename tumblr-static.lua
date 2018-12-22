@@ -27,6 +27,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
       if failures > maxfailures then
         io.stdout:write('Too many errors, giving up on this item')
         io.stdout:flush()
+        return wget.actions.ABORT
       end
       tries = 0
       failures = failures + 1
