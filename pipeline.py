@@ -176,7 +176,6 @@ class WgetArgs(object):
             '-e', 'robots=off',
             '--rotate-dns',
             '--no-parent',
-            '--page-requisites',
             '--timeout', '30',
             '--tries', 'inf',
             '--span-hosts',
