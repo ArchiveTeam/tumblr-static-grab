@@ -3,6 +3,10 @@ local tries = 0
 local failures = 0
 local maxfailures = 5
 
+wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_parsed, iri, verdict, reason)
+  return false
+end
+
 wget.callbacks.httploop_result = function(url, err, http_stat)
   status_code = http_stat["statcode"]
 
